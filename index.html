@@ -41,7 +41,7 @@
         During this phase, we are going to be focusing on importing the data from the website and transforming it so that it's ready for analysis.</p>
 
         <p>In this tutorial, we are going to be using data of Battery Electric Vehicles (BEVs) and Plug in Hybrid Electric Vehicles (PHEVs) that are currently registered 
-            through Wasington State Department of Licensing (DOL). The data includes information about the make, model, year, electric range, base MSRP, and the county. 
+            through Wasington State Department of Licensing (DOL). The data includes information about the make, model, year, electric range, base MSRP, county, etc.. 
             After going to the <a href="Data.gov">Data.gov</a> and finding a dataset that best fit our project, we downloaded this dataset as a CSV file. This allows us to
             easily import the data into our Python environment, and using Pandas, to set up a a data frame in order to manipulate the data.
         </p>
@@ -57,10 +57,165 @@
         </body>
         
         <p>Once we have downloaded the data as a CSV file, we can import this data into our Python environment using this code:</p>
-        <code>
-            import pandas as pd
-            data = pd.read_csv('Electric_Vehicle_Population_Data.csv')
-        </code>
+        <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
+
+            <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+            <div class="jp-Cell-inputWrapper">
+            <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+            </div>
+            <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+            </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+            <h1 id="Checkpoint-1---Because-we-switched-datasets">Checkpoint 1 - Because we switched datasets<a class="anchor-link" href="#Checkpoint-1---Because-we-switched-datasets">&#182;</a></h1><p>The new dataset we are using is going to be attached to this new submission of checkpoint 2. We are using a dataset of Electric vehicle population data. This dataset shows the Battery Electric Vehicles (BEVs) and Plug-in Hybrid Electric Vehicles (PHEVs) that are currently registered through Washington State Department of Licensing (DOL). We decided to switch to this dataset because the other dataset was too big and it contained information that we weren't familiar with about the stock market. We can pull better conclusions from this dataset and we can create a more understandable tutorial with this dataset because the data is much easier to understand over stock market terms. To answer the question in Checkpoint 1 about why we chose the dataset,we chose this dataset because it has a lot of information about electric vehcicles and because they are growing in popularity. We thought this would be a good topic to explore because we have a wide variety of data points we can use as well as more information about electric vehicles that we are familioar with.</p>
+            
+            </div>
+            </div>
+            </div>
+            </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+            <div class="jp-Cell-inputWrapper">
+            <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+            </div>
+            <div class="jp-InputArea jp-Cell-inputArea">
+            <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+            <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+                 <div class="CodeMirror cm-s-jupyter">
+            <div class=" highlight hl-python"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+            
+            <span class="c1"># Project 2 CheckPoint - Aaryan, Sowmya</span>
+            
+            <span class="c1"># Data Processing</span>
+            
+            <span class="c1"># a) Import</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'Electric_Vehicle_Population_Data.csv'</span><span class="p">)</span>
+            
+            <span class="c1"># b and c) parse, looked at the types and if the variables had the correct types (i.e numbers had int64, etc.)</span>
+            <span class="c1"># Looked through the data and also have already set up a dataframe (part c)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"TYPES:"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'------------------------------------------------------------------------------------------------------'</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"DATAFRAME:"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">)</span>
+            </pre></div>
+            
+                 </div>
+            </div>
+            </div>
+            </div>
+            
+            <div class="jp-Cell-outputWrapper">
+            <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+            </div>
+            
+            
+            <div class="jp-OutputArea jp-Cell-outputArea">
+            
+            <div class="jp-OutputArea-child">
+            
+                
+                <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+            
+            
+            <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+            <pre>TYPES:
+            VIN (1-10)                                            object
+            County                                                object
+            City                                                  object
+            State                                                 object
+            Postal Code                                          float64
+            Model Year                                             int64
+            Make                                                  object
+            Model                                                 object
+            Electric Vehicle Type                                 object
+            Clean Alternative Fuel Vehicle (CAFV) Eligibility     object
+            Electric Range                                         int64
+            Base MSRP                                              int64
+            Legislative District                                 float64
+            DOL Vehicle ID                                         int64
+            Vehicle Location                                      object
+            Electric Utility                                      object
+            2020 Census Tract                                    float64
+            dtype: object
+            ------------------------------------------------------------------------------------------------------
+            DATAFRAME:
+            &lt;bound method NDFrame.head of         VIN (1-10)     County           City State  Postal Code  Model Year  \
+            0       5YJYGDEE1L       King        Seattle    WA      98122.0        2020   
+            1       7SAYGDEE9P  Snohomish        Bothell    WA      98021.0        2023   
+            2       5YJSA1E4XK       King        Seattle    WA      98109.0        2019   
+            3       5YJSA1E27G       King       Issaquah    WA      98027.0        2016   
+            4       5YJYGDEE5M     Kitsap      Suquamish    WA      98392.0        2021   
+            ...            ...        ...            ...   ...          ...         ...   
+            177861  7SAYGDEE3N     Pierce    Bonney Lake    WA      98391.0        2022   
+            177862  KM8K23AG1P      Mason        Shelton    WA      98584.0        2023   
+            177863  5YJYGDEE6M      Grant         Quincy    WA      98848.0        2021   
+            177864  WVGKMPE27M       King  Black Diamond    WA      98010.0        2021   
+            177865  5YJ3E1EA8M     Pierce         Tacoma    WA      98422.0        2021   
+            
+                          Make          Model           Electric Vehicle Type  \
+            0            TESLA        MODEL Y  Battery Electric Vehicle (BEV)   
+            1            TESLA        MODEL Y  Battery Electric Vehicle (BEV)   
+            2            TESLA        MODEL S  Battery Electric Vehicle (BEV)   
+            3            TESLA        MODEL S  Battery Electric Vehicle (BEV)   
+            4            TESLA        MODEL Y  Battery Electric Vehicle (BEV)   
+            ...            ...            ...                             ...   
+            177861       TESLA        MODEL Y  Battery Electric Vehicle (BEV)   
+            177862     HYUNDAI  KONA ELECTRIC  Battery Electric Vehicle (BEV)   
+            177863       TESLA        MODEL Y  Battery Electric Vehicle (BEV)   
+            177864  VOLKSWAGEN           ID.4  Battery Electric Vehicle (BEV)   
+            177865       TESLA        MODEL 3  Battery Electric Vehicle (BEV)   
+            
+                    Clean Alternative Fuel Vehicle (CAFV) Eligibility  Electric Range  \
+            0                 Clean Alternative Fuel Vehicle Eligible             291   
+            1       Eligibility unknown as battery range has not b...               0   
+            2                 Clean Alternative Fuel Vehicle Eligible             270   
+            3                 Clean Alternative Fuel Vehicle Eligible             210   
+            4       Eligibility unknown as battery range has not b...               0   
+            ...                                                   ...             ...   
+            177861  Eligibility unknown as battery range has not b...               0   
+            177862  Eligibility unknown as battery range has not b...               0   
+            177863  Eligibility unknown as battery range has not b...               0   
+            177864  Eligibility unknown as battery range has not b...               0   
+            177865  Eligibility unknown as battery range has not b...               0   
+            
+                    Base MSRP  Legislative District  DOL Vehicle ID  \
+            0               0                  37.0       125701579   
+            1               0                   1.0       244285107   
+            2               0                  36.0       156773144   
+            3               0                   5.0       165103011   
+            4               0                  23.0       205138552   
+            ...           ...                   ...             ...   
+            177861          0                  31.0       195224452   
+            177862          0                  35.0       228454180   
+            177863          0                  13.0       168797219   
+            177864          0                   5.0       182448801   
+            177865          0                  27.0       211464683   
+            
+                                   Vehicle Location  \
+            0          POINT (-122.30839 47.610365)   
+            1         POINT (-122.179458 47.802589)   
+            2          POINT (-122.34848 47.632405)   
+            3          POINT (-122.03646 47.534065)   
+            4          POINT (-122.55717 47.733415)   
+            ...                                 ...   
+            177861     POINT (-122.183805 47.18062)   
+            177862    POINT (-123.105305 47.211085)   
+            177863  POINT (-119.8493873 47.2339933)   
+            177864     POINT (-122.00451 47.312185)   
+            177865      POINT (-122.38578 47.28971)   
+            
+                                                     Electric Utility  2020 Census Tract  
+            0            CITY OF SEATTLE - (WA)|CITY OF TACOMA - (WA)       5.303301e+10  
+            1                                  PUGET SOUND ENERGY INC       5.306105e+10  
+            2            CITY OF SEATTLE - (WA)|CITY OF TACOMA - (WA)       5.303301e+10  
+            3           PUGET SOUND ENERGY INC||CITY OF TACOMA - (WA)       5.303303e+10  
+            4                                  PUGET SOUND ENERGY INC       5.303594e+10  
+            ...                                                   ...                ...  
+            177861      PUGET SOUND ENERGY INC||CITY OF TACOMA - (WA)       5.305307e+10  
+            177862  BONNEVILLE POWER ADMINISTRATION||CITY OF TACOM...       5.304596e+10  
+            177863                           PUD NO 2 OF GRANT COUNTY       5.302501e+10  
+            177864      PUGET SOUND ENERGY INC||CITY OF TACOMA - (WA)       5.303303e+10  
+            177865  BONNEVILLE POWER ADMINISTRATION||CITY OF TACOM...       5.305394e+10  
+            
+            [177866 rows x 17 columns]&gt;
+            </pre>
         <p>Here, 'Electric_Vehicle_Population_Data.csv' is the name of the CSV file that we are going to be extracting data from.</p>
     </body>
 </html>
