@@ -41,11 +41,17 @@ body {
 /* Margins are the PDF's: 0.4in top, 0.55in sides, as a share of 8.5in. */
 .page { padding: 4.7vw 6.47vw 14vh; }
 
-a { color: inherit; text-decoration: none;
-    background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 0.06em;
-    transition: background-size 0.45s var(--ease); }
-a:hover, a:focus-visible { background-size: 100% 0.06em; }
-a:focus-visible { outline: none; }
+/* Links read like hyperref's colorlinks: blue, with a standing hairline underline
+   that a solid one sweeps across on hover. */
+:root { --link: #1f3fbf; --link-faint: rgba(31, 63, 191, 0.35); }
+a { color: var(--link); text-decoration: none; padding-bottom: 0.04em;
+    background-image: linear-gradient(var(--link), var(--link)), linear-gradient(var(--link-faint), var(--link-faint));
+    background-repeat: no-repeat; background-position: 0 100%, 0 100%;
+    background-size: 0 0.08em, 100% 0.06em;
+    transition: background-size 0.45s var(--ease), color 0.3s var(--ease); }
+a strong { color: inherit; }
+a:hover, a:focus-visible { background-size: 100% 0.08em, 100% 0.06em; }
+a:focus-visible { outline: 1px dotted var(--link); outline-offset: 0.15em; }
 
 header { text-align: center; margin-bottom: 0.4em; }
 h1 { font-size: 1.728em; font-weight: 700; line-height: 1.2; margin: 0 0 0.17em; }
@@ -116,7 +122,7 @@ li::before { content: "\2022"; position: absolute; left: -0.85em; }
   .progress, .pdf-link { display: none; }
   .js .ch, .js [data-r], .js .row > *, .js h2 .t > span, .js h2::after, .js li::before, .js .skill {
     opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
-  a { background: none; }
+  a { background: none; color: #000; }
 }
 </style>
 </head>
