@@ -106,6 +106,16 @@ li::before { content: "\2022"; position: absolute; left: -0.85em; }
              transition: opacity 0.7s var(--ease), transform 0.9s var(--ease); transition-delay: var(--d, 0ms); }
 .js .in .skill { opacity: 1; transform: none; }
 
+/* Hover preview: a LaTeX figure (image + "Figure 1:" caption) that follows the cursor. */
+.preview { position: fixed; top: 0; left: 0; z-index: 20; margin: 0; width: clamp(300px, 27vw, 460px);
+           padding: 0.45em 0.45em 0.55em; background: #fff; border: max(1px, 0.042em) solid #000;
+           box-shadow: 0 0.8em 2.4em rgba(0, 0, 0, 0.16); pointer-events: none;
+           opacity: 0; scale: 0.94; transform-origin: var(--ox, left) var(--oy, top);
+           transition: opacity 0.35s var(--ease), scale 0.45s var(--ease); will-change: translate; }
+.preview.on { opacity: 1; scale: 1; }
+.preview img { display: block; width: 100%; height: auto; }
+.preview figcaption { font-size: 0.72em; line-height: 1.25; margin-top: 0.5em; text-align: center; color: #000; }
+
 @media (max-width: 640px) {
   .page { padding: 28px 16px 72px; }
 }
@@ -119,7 +129,7 @@ li::before { content: "\2022"; position: absolute; left: -0.85em; }
 @media print {
   body { font-size: 10pt; }
   .page { padding: 0; }
-  .progress, .pdf-link { display: none; }
+  .progress, .pdf-link, .preview { display: none; }
   .js .ch, .js [data-r], .js .row > *, .js h2 .t > span, .js h2::after, .js li::before, .js .skill {
     opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
   a { background: none; color: #000; }
@@ -128,6 +138,10 @@ li::before { content: "\2022"; position: absolute; left: -0.85em; }
 </head>
 <body>
 <div class="progress" aria-hidden="true"></div>
+<figure class="preview" aria-hidden="true">
+  <img src="images/agentbar.jpg" width="918" height="826" decoding="async" alt="">
+  <figcaption><strong>Figure 1:</strong> The AgentBar menu: live Claude Code and Codex sessions with state, elapsed time and last prompt, and the menu bar badge counts.</figcaption>
+</figure>
 <main class="page">
 
 <header>
@@ -188,7 +202,7 @@ li::before { content: "\2022"; position: absolute; left: -0.85em; }
 <section>
   <h2>Projects</h2>
   <div class="entry">
-    <div class="row"><span><a href="https://github.com/AaryanJ45/agent-menubar"><strong>AgentBar</strong></a> | <em>Swift, AppKit, Python, Claude Code and Codex hooks</em></span><a href="https://github.com/AaryanJ45/agent-menubar">github.com/AaryanJ45/agent-menubar</a></div>
+    <div class="row"><span><a href="https://github.com/AaryanJ45/agent-menubar" data-preview><strong>AgentBar</strong></a> | <em>Swift, AppKit, Python, Claude Code and Codex hooks</em></span><a href="https://github.com/AaryanJ45/agent-menubar" data-preview>github.com/AaryanJ45/agent-menubar</a></div>
   </div>
   <ul>
     <li>Open-source macOS menu bar app that monitors every running Claude Code and Codex session, showing its state, current tool and last prompt, with badges and notifications when a session finishes or needs permission.</li>
@@ -284,6 +298,37 @@ li::before { content: "\2022"; position: absolute; left: -0.85em; }
       });
     }, { rootMargin: "0px 0px -9% 0px" });
     targets.forEach(function (t) { io.observe(t); });
+  }
+
+  // Project preview: the figure trails the cursor while it is over a project link.
+  var pv = document.querySelector(".preview");
+  if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    var mx = 0, my = 0, px = 0, py = 0, tx = 0, ty = 0, prf = 0, on = false, GAP = 26;
+    var place = function () {
+      var w = pv.offsetWidth, h = pv.offsetHeight, x = mx + GAP, y = my + GAP, ox = "left", oy = "top";
+      if (x + w > innerWidth - 16) { x = mx - w - GAP; ox = "right"; }
+      if (y + h > innerHeight - 16) { y = Math.max(16, my - h - GAP); oy = "bottom"; }
+      tx = x; ty = y; pv.style.setProperty("--ox", ox); pv.style.setProperty("--oy", oy);
+    };
+    var follow = function () {
+      px += (tx - px) * (reduce ? 1 : 0.18); py += (ty - py) * (reduce ? 1 : 0.18);
+      pv.style.translate = px + "px " + py + "px";
+      prf = Math.abs(tx - px) + Math.abs(ty - py) > 0.3 ? requestAnimationFrame(follow) : 0;
+    };
+    var hide = function () { on = false; pv.classList.remove("on"); };
+    document.querySelectorAll("[data-preview]").forEach(function (a) {
+      a.addEventListener("pointerenter", function (e) {
+        mx = e.clientX; my = e.clientY; place();
+        if (!on) { px = tx; py = ty; pv.style.translate = px + "px " + py + "px"; }
+        on = true; pv.classList.add("on");
+      });
+      a.addEventListener("pointermove", function (e) {
+        mx = e.clientX; my = e.clientY; place();
+        if (!prf) prf = requestAnimationFrame(follow);
+      });
+      a.addEventListener("pointerleave", hide);
+    });
+    addEventListener("scroll", function () { if (on) hide(); }, { passive: true });
   }
 
   // Scroll progress rule.
