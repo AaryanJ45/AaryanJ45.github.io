@@ -316,19 +316,32 @@ li::before { content: "\2022"; position: absolute; left: -0.85em; }
       prf = Math.abs(tx - px) + Math.abs(ty - py) > 0.3 ? requestAnimationFrame(follow) : 0;
     };
     var hide = function () { on = false; pv.classList.remove("on"); };
+    var show = function () {
+      place();
+      if (!on) { px = tx; py = ty; pv.style.translate = px + "px " + py + "px"; }
+      on = true; pv.classList.add("on");
+      if (!prf) prf = requestAnimationFrame(follow);
+    };
+    // Decide from what is actually under the pointer, not from enter/leave alone: the
+    // eased scroll and the reveal animations keep moving the page after the mouse
+    // stops, and those must not close a preview the pointer is still on.
+    var sync = function () {
+      var el = document.elementFromPoint(mx, my);
+      if (el && el.closest("[data-preview]")) show(); else if (on) hide();
+    };
+    var img = pv.querySelector("img");
+    if (img.decode) img.decode().catch(function () {});
+    img.addEventListener("load", function () { if (on) place(); });
+    document.addEventListener("pointermove", function (e) {
+      mx = e.clientX; my = e.clientY;
+      if (on || e.target.closest && e.target.closest("[data-preview]")) sync();
+    }, { passive: true });
     document.querySelectorAll("[data-preview]").forEach(function (a) {
-      a.addEventListener("pointerenter", function (e) {
-        mx = e.clientX; my = e.clientY; place();
-        if (!on) { px = tx; py = ty; pv.style.translate = px + "px " + py + "px"; }
-        on = true; pv.classList.add("on");
-      });
-      a.addEventListener("pointermove", function (e) {
-        mx = e.clientX; my = e.clientY; place();
-        if (!prf) prf = requestAnimationFrame(follow);
-      });
-      a.addEventListener("pointerleave", hide);
+      a.addEventListener("pointerenter", function (e) { mx = e.clientX; my = e.clientY; show(); });
+      a.addEventListener("pointerleave", function (e) { mx = e.clientX; my = e.clientY; sync(); });
     });
-    addEventListener("scroll", function () { if (on) hide(); }, { passive: true });
+    addEventListener("scroll", sync, { passive: true });
+    document.documentElement.addEventListener("pointerleave", hide);
   }
 
   // Scroll progress rule.
