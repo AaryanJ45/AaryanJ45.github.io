@@ -215,10 +215,11 @@ li::before { content: "\2022"; position: absolute; left: -0.85em; }
     <li>Native macOS notch app that alerts when an AI coding agent finishes a prompt; watches session files with file-system and process-exit events, coalesces bursts in <span class="num" data-to="100">100</span> ms windows, bounds reads, and rebaselines on wake.</li>
   </ul>
   <div class="entry">
-    <div class="row"><span><strong>AI Job Application Tracker</strong> | <em>Python, Claude Code skills, Gmail IMAP, openpyxl</em></span></div>
+    <div class="row"><span><a href="https://github.com/AaryanJ45/context-lens"><strong>context-lens</strong></a> | <em>Python, Claude Code plugins, Anthropic API, headless evals</em></span><a href="https://github.com/AaryanJ45/context-lens">github.com/AaryanJ45/context-lens</a></div>
   </div>
   <ul>
-    <li>Claude Code skill that parses job links into an Excel tracker (Greenhouse JSON API fallback for career sites that time out) and classifies Gmail replies to update interview, assessment and rejection status.</li>
+    <li>Open-source CLI and Claude Code plugin that audits what Claude Code loads before the first prompt, where sessions waste tokens, and whether past sessions followed CLAUDE.md, then ranks fixes in an HTML report.</li>
+    <li>Mines past sessions for rejected actions and repeated corrections to write the missing rules, and compacts CLAUDE.md into path-scoped rules verified by blind A/B evals over <span class="num" data-to="174">174</span> headless sessions: startup context fell from 63.5k to 17.0k tokens with no measurable loss in rule-following.</li>
   </ul>
 </section>
 
